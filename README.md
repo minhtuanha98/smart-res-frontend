@@ -1,6 +1,8 @@
-# 🍽️ Smart Resident Frontend
 
-A modern, responsive frontend application for smart resident management built with Next.js, TypeScript, and Tailwind CSS.
+# 🍽️ Smart Residence Frontend
+
+A modern, responsive frontend application for Smart Residence management built with Next.js, TypeScript, and Tailwind CSS.
+
 
 ## ✨ Features
 
@@ -220,4 +222,4 @@ npm run format       # Prettier code formatting
 
 ---
 
-**Built with ❤️ for modern Resident management**
+**Built with ❤️ for modern Smart Residence management**
