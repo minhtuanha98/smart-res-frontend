@@ -1,6 +1,8 @@
+
 # 🍽️ Smart Residence Frontend
 
 A modern, responsive frontend application for Smart Residence management built with Next.js, TypeScript, and Tailwind CSS.
+
 
 ## ✨ Features
 
@@ -79,7 +81,7 @@ src/
 4. **Configure environment variables**
    ```env
    NEXT_PUBLIC_API_URL=http://localhost:8000/api
-   NEXT_PUBLIC_APP_NAME=Smart Residence
+   NEXT_PUBLIC_APP_NAME=Smart Resident
    NEXT_PUBLIC_LOG_LEVEL=info
    ```
 
