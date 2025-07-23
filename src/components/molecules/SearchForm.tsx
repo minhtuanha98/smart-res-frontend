@@ -1,0 +1,41 @@
+import React from 'react';
+import { Box } from '@mui/material';
+import Input from '../atoms/Input';
+import ButtonBase from '../atoms/ButtonBase';
+
+interface SearchFormProps {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSubmit: (e: React.FormEvent) => void;
+  placeholder?: string;
+}
+
+const SearchForm: React.FC<SearchFormProps> = ({
+  value,
+  onChange,
+  onSubmit,
+  placeholder,
+}) => (
+  <Box component='form' onSubmit={onSubmit} className='flex gap-2 mb-2'>
+    <Input
+      name='search'
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder || 'Search...'}
+      size='small'
+      sx={{ flex: 1 }}
+    />
+    <ButtonBase
+      type='submit'
+      variant='outlined'
+      fontSize='20px'
+      color='error'
+      className='h-full'
+      style={{ minWidth: 0, width: '150px', height: '40px' }}
+    >
+      Tìm Kiếm
+    </ButtonBase>
+  </Box>
+);
+
+export default SearchForm;
