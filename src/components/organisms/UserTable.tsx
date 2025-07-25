@@ -135,7 +135,7 @@ const UserTable: React.FC<UserTableProps> = ({
           onChange={(_, value) => onPageChange(value)}
         />
       </div>
-      <Dialog open={open} onClose={handleClose} maxWidth='xs' fullWidth>
+      <Dialog open={open} onClose={handleClose} maxWidth='xs'>
         <DialogTitle>Cập nhật thông tin user</DialogTitle>
         <DialogContent>
           <TextField

@@ -38,15 +38,23 @@ const Table: React.FC<TableProps> = ({ columns, data }) => (
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.map((row, idx) => (
-          <TableRow hover tabIndex={-1} key={idx}>
-            {columns.map(column => (
-              <TableCell key={column.id} align={column.align || 'left'}>
-                {row[column.id]}
-              </TableCell>
-            ))}
+        {data.length === 1 && data[0].specialEmptyRow ? (
+          <TableRow>
+            <TableCell colSpan={columns.length} align='center'>
+              {data[0].message}
+            </TableCell>
           </TableRow>
-        ))}
+        ) : (
+          data.map((row, idx) => (
+            <TableRow hover tabIndex={-1} key={idx}>
+              {columns.map(column => (
+                <TableCell key={column.id} align={column.align || 'left'}>
+                  {row[column.id]}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))
+        )}
       </TableBody>
     </MUITable>
   </TableContainer>

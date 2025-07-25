@@ -143,7 +143,7 @@ const FeedbackTable: React.FC<FeedbackTableProps> = ({
           onChange={(_, value) => onPageChange(value)}
         />
       </div>
-      <Dialog open={open} onClose={handleClose} maxWidth='sm' fullWidth>
+      <Dialog open={open} onClose={handleClose} maxWidth='sm'>
         <DialogTitle>Chi tiết phản ánh</DialogTitle>
         <DialogContent>
           {selected && (

@@ -56,12 +56,12 @@ export const queryClient = new QueryClient({
   mutationCache: new MutationCache({
     onError: (error: any, variables, context, mutation) => {
       // Log mutation errors
-      log.error('React Query Mutation Error', {
-        mutationKey: mutation.options.mutationKey,
-        error: error.message,
-        status: error?.response?.status,
-        variables,
-      });
+      // log.error('React Query Mutation Error', {
+      //   mutationKey: mutation.options.mutationKey,
+      //   error: error.message,
+      //   status: error?.response?.status,
+      //   variables,
+      // });
     },
     onSuccess: (data, variables, context, mutation) => {
       // Log successful mutations
@@ -78,6 +78,7 @@ export const queryKeys = {
   // Auth
   auth: {
     user: () => ['auth', 'user'] as const,
+    logout: () => ['logout'] as const,
     profile: (userId: string) => ['auth', 'profile', userId] as const,
   },
 
