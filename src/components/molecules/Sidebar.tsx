@@ -1,6 +1,7 @@
 import React from 'react';
 import { Drawer, List, Toolbar, Box, Button } from '@mui/material';
 import SidebarItem from '../atoms/SidebarItem';
+import ButtonBase from '../atoms/ButtonBase';
 
 interface SidebarProps {
   selected: 'user' | 'feedback';
@@ -41,9 +42,9 @@ const Sidebar: React.FC<SidebarProps> = ({ selected, onSelect, onLogout }) => (
       </List>
     </div>
     <Box className='p-2'>
-      <Button variant='outlined' color='error' fullWidth onClick={onLogout}>
+      <ButtonBase variant='outlined' color='error' onClick={onLogout}>
         Logout
-      </Button>
+      </ButtonBase>
     </Box>
   </Drawer>
 );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 import Input from '../atoms/Input';
 import ButtonBase from '../atoms/ButtonBase';
 
@@ -17,13 +17,12 @@ const SearchForm: React.FC<SearchFormProps> = ({
   placeholder,
 }) => (
   <Box component='form' onSubmit={onSubmit} className='flex gap-2 mb-2'>
-    <Input
-      name='search'
+    <TextField
+      name='title'
+      placeholder={placeholder || 'Search...'}
       value={value}
       onChange={onChange}
-      placeholder={placeholder || 'Search...'}
-      size='small'
-      sx={{ flex: 1 }}
+      className='flex-1'
     />
     <ButtonBase
       type='submit'
@@ -31,7 +30,7 @@ const SearchForm: React.FC<SearchFormProps> = ({
       fontSize='20px'
       color='error'
       className='h-full'
-      style={{ minWidth: 0, width: '150px', height: '40px' }}
+      style={{ minWidth: 0, width: '150px', height: '56px' }}
     >
       Tìm Kiếm
     </ButtonBase>

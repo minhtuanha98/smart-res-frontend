@@ -1,62 +1,50 @@
-import axios, {
-  AxiosInstance,
-  AxiosRequestConfig,
-  AxiosResponse,
-  InternalAxiosRequestConfig,
-} from 'axios';
-import { log } from '@/utils/browser-logger';
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
+
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 // Create axios instance
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
+  baseURL: baseUrl,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 });
 
-// Request interceptor
 axiosInstance.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    // Log request
-    log.http('API Request', {
-      method: config.method?.toUpperCase(),
-      url: config.url,
-      baseURL: config.baseURL,
-      headers: config.headers,
-    });
-
+  config => {
     return config;
   },
   error => {
-    log.error('Request interceptor error', { error: error.message });
+    // Xử lý lỗi request
     return Promise.reject(error);
   }
 );
 
-// Response interceptor
+// Response Interceptor
 axiosInstance.interceptors.response.use(
-  (response: AxiosResponse) => {
-    // Log successful response
-    log.http('API Response Success', {
-      status: response.status,
-      statusText: response.statusText,
-      url: response.config.url,
-      method: response.config.method?.toUpperCase(),
-    });
-
+  response => {
     return response;
   },
-  async error => {
-    // Log error response
-    log.error('API Response Error', {
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      url: error.config?.url,
-      method: error.config?.method?.toUpperCase(),
-      message: error.message,
-    });
-
+  (error: AxiosError) => {
+    // Xử lý lỗi chung
+    if (error.response) {
+      switch (error.response.status) {
+        case 401:
+          break;
+        case 403:
+          break;
+        case 404:
+          break;
+        case 500:
+          break;
+        default:
+          break;
+      }
+    } else if (error.request) {
+    } else {
+    }
     return Promise.reject(error);
   }
 );
@@ -76,7 +64,10 @@ export const apiClient = {
   ): Promise<T> => {
     return axiosInstance
       .post(url, data, config)
-      .then(response => response.data);
+      .then(response => response.data)
+      .catch(error => {
+        throw error;
+      });
   },
 
   // PUT request

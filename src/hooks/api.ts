@@ -1,4 +1,4 @@
-import { apiClient } from '@/utils/api';
+import { apiClient } from '@/configs/api';
 import { User, ApiResponse } from '@/types';
 
 // Auth API functions

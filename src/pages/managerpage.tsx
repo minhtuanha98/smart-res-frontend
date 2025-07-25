@@ -3,6 +3,7 @@ import UserTable, { User } from '@/components/organisms/UserTable';
 import SearchForm from '@/components/molecules/SearchForm';
 import FeedbackTable, { Feedback } from '@/components/organisms/FeedbackTable';
 import DashboardLayout from '@/components/templates/DashboardLayout';
+import { useLogout } from '@/hooks/useLogout';
 
 const MOCK_USERS: User[] = [
   {
@@ -136,6 +137,7 @@ const DashboardPage: React.FC = () => {
   const [tab, setTab] = useState<'user' | 'feedback'>('user');
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
+  const { logoutHandler } = useLogout();
 
   // Filtered data
   const filteredUsers = useMemo(
@@ -176,8 +178,7 @@ const DashboardPage: React.FC = () => {
   }, [tab, search]);
 
   const handleLogout = () => {
-    // TODO: handle logout logic
-    alert('Đăng xuất!');
+    logoutHandler.mutate();
   };
 
   return (
