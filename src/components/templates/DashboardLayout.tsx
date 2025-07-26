@@ -1,8 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import Header from '../atoms/Header';
-import Sidebar from '../molecules/Sidebar';
-
+import Sidebar from '@/components/molecules/Sidebar';
+import Header from '@/components/atoms/Header';
 interface DashboardLayoutProps {
   children: React.ReactNode;
   selected: 'user' | 'feedback';

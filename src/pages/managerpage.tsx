@@ -57,8 +57,8 @@ const ManagerPage: React.FC = () => {
         }}
         placeholder={
           tab === 'user'
-            ? 'Tìm kiếm tên, email, SĐT, căn hộ...'
-            : 'Tìm kiếm tên, căn hộ, nội dung...'
+            ? 'Search name, email, phone number, apartment...'
+            : 'Search by name, apartment, content...'
         }
       />
       {tab === 'user' ? (

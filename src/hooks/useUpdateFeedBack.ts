@@ -1,17 +1,10 @@
-import { useFormik } from 'formik';
-import {
-  useCreateFeedBackApi,
-  useGetFeedBackApi,
-  useUpdateStatusApi,
-} from '../api/feedbackApi';
-import { feedBackSchema } from '@/schemas/feedBackSchema';
 import { toast } from 'react-toastify';
 import { useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/utils/query-client';
+import { MESSAGE } from '@/constants/message';
+import { useUpdateStatusApi } from '@/api/feedbackApi';
 
-interface dataType {
-  status?: string;
-}
+const { FEEDBACK_UPDATED, UPDATE_FEEDBACK_FAIL } = MESSAGE.FEEDBACK;
 
 interface sendError {
   response?: {
@@ -27,15 +20,14 @@ export const useUpdateFeedBack = () => {
 
   const updateStatusMutation = useUpdateStatusApi({
     onSuccess: () => {
-      // Invalidate và refetch danh sách feedback
       queryClient.invalidateQueries({
         queryKey: [queryKeys.feedback.listFeedBack()],
       });
-      toast('Feedback update successfully!');
+      toast(FEEDBACK_UPDATED);
     },
     onError: (error: sendError) => {
       toast(
-        'update failed: ' + (error.response?.data?.message || error.message)
+        UPDATE_FEEDBACK_FAIL + (error.response?.data?.message || error.message)
       );
     },
   });

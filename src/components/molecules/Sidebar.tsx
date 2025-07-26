@@ -1,7 +1,7 @@
 import React from 'react';
 import { Drawer, List, Toolbar, Box, Button } from '@mui/material';
-import SidebarItem from '../atoms/SidebarItem';
-import ButtonBase from '../atoms/ButtonBase';
+import SidebarItem from '@/components/atoms/SidebarItem';
+import ButtonBase from '@/components/atoms/ButtonBase';
 
 interface SidebarProps {
   selected: 'user' | 'feedback';
@@ -28,13 +28,13 @@ const Sidebar: React.FC<SidebarProps> = ({ selected, onSelect, onLogout }) => (
       <Toolbar />
       <List>
         <SidebarItem
-          label='Quản lý người dùng'
+          label='User Management'
           icon='user'
           selected={selected === 'user'}
           onClick={() => onSelect('user')}
         />
         <SidebarItem
-          label='Quản lý phản ánh'
+          label='Feedback Management'
           icon='feedback'
           selected={selected === 'feedback'}
           onClick={() => onSelect('feedback')}

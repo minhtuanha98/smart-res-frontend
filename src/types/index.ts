@@ -1,3 +1,12 @@
+export interface LoginPayload {
+  username: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  // Define the expected response shape here if known
+  [key: string]: any;
+}
 // User related types
 export interface User {
   id: string;
@@ -5,7 +14,6 @@ export interface User {
   firstName: string;
   lastName: string;
   role: UserRole;
-  avatar?: string;
   createdAt: string;
   updatedAt: string;
 }

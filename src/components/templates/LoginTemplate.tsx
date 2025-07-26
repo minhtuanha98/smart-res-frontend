@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
 
 interface LoginTemplateProps {
@@ -19,8 +19,8 @@ const LoginTemplate: React.FC<LoginTemplateProps> = ({ title, formik }) => {
         <form onSubmit={formik.handleSubmit} noValidate>
           <TextField
             name='username'
-            label='Tên đăng nhập'
-            placeholder='Tên đăng nhập'
+            label='Username'
+            placeholder='username'
             value={formik.values.username || ''}
             onChange={formik.handleChange || (() => {})}
             onBlur={formik.handleBlur || (() => {})}
@@ -37,8 +37,8 @@ const LoginTemplate: React.FC<LoginTemplateProps> = ({ title, formik }) => {
           )}
           <TextField
             name='password'
-            label='Mật khẩu'
-            placeholder='Mật khẩu'
+            label='Password'
+            placeholder='password'
             type='password'
             value={formik.values.password || ''}
             onChange={formik.handleChange || (() => {})}
@@ -57,7 +57,7 @@ const LoginTemplate: React.FC<LoginTemplateProps> = ({ title, formik }) => {
           <br />
           <br />
           <Button type='submit' variant='contained' color='primary'>
-            Đăng Nhập
+            Login
           </Button>
         </form>
       </Box>

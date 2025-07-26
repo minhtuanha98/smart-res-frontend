@@ -1,15 +1,13 @@
 import { useFormik } from 'formik';
-import { useCreateFeedBackApi, useGetFeedBackApi } from '../api/feedbackApi';
 import { feedBackSchema } from '@/schemas/feedBackSchema';
 import { toast } from 'react-toastify';
 import { useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/utils/query-client';
+import { PayloadType } from '@/types/feedBackType';
+import { MESSAGE } from '@/constants/message';
+import { useCreateFeedBackApi, useGetFeedBackApi } from '@/api/feedbackApi';
 
-interface dataType {
-  page?: string;
-  limit?: string;
-  status?: string;
-}
+const { FEEDBACK_CREATED, CREATE_FEEDBACK_FAIL } = MESSAGE.FEEDBACK;
 
 interface sendError {
   response?: {
@@ -20,21 +18,20 @@ interface sendError {
   message?: string;
 }
 
-export const useFeedBack = (params: dataType) => {
+export const useFeedBack = (params: PayloadType) => {
   const queryClient = useQueryClient();
   const { page, limit, status } = params;
 
   const sendFeedBackMutation = useCreateFeedBackApi({
     onSuccess: () => {
-      // Invalidate và refetch danh sách feedback
       queryClient.invalidateQueries({
         queryKey: [queryKeys.feedback.listFeedBack()],
       });
-      toast('Feedback sent successfully!');
+      toast(FEEDBACK_CREATED);
     },
     onError: (error: sendError) => {
       toast(
-        'Login failed: ' + (error.response?.data?.message || error.message)
+        CREATE_FEEDBACK_FAIL + (error.response?.data?.message || error.message)
       );
     },
   });

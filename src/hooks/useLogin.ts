@@ -1,15 +1,13 @@
 import { loginSchema } from '@/schemas/loginSchema';
 import { useFormik } from 'formik';
-import { useLoginMutationApi } from '../api/authApi';
 import router from 'next/router';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import logger from '@/utils/logger';
+import { LoginResponse } from '@/types';
+import { MESSAGE } from '@/constants/message';
+import { useLoginMutationApi } from '@/api/authApi';
 
-interface LoginResponse {
-  // Define the expected response shape here if known
-  [key: string]: any;
-}
+const { LOGIN_FAIL } = MESSAGE.AUTH;
 
 interface LoginError {
   response?: {
@@ -34,9 +32,7 @@ export const useLogin = () => {
       }
     },
     onError: (error: LoginError) => {
-      toast(
-        'Login failed: ' + (error.response?.data?.message || error.message)
-      );
+      toast(LOGIN_FAIL + (error.response?.data?.message || error.message));
     },
   });
 

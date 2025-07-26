@@ -1,7 +1,7 @@
 import { MESSAGE } from '@/constants/message';
 import * as yup from 'yup';
 
-const { USERNAME_REQUIRE, PASSWORD_REQUIRE } = MESSAGE.LOGIN;
+const { USERNAME_REQUIRE, PASSWORD_REQUIRE } = MESSAGE.AUTH;
 
 export const loginSchema = yup
   .object({
