@@ -12,14 +12,15 @@ export const HTTP_STATUS = {
 // API Endpoints
 export const API_ENDPOINTS = {
   AUTH: {
-    LOGIN: '/api/auth/login',
-    REGISTER: '/api/auth/register',
-    LOGOUT: '/api/auth/logout',
-    REFRESH: '/api/auth/refresh',
+    LOGIN: '/user/login',
+    LOGOUT: '/user/logout',
+  },
+  FEEDBACK: {
+    USER_LIST: '/user/list/feedbacks',
+    USER_FEEDBACK: '/user/feedback',
   },
   USER: {
-    PROFILE: '/api/user/profile',
-    UPDATE: '/api/user/update',
+    LIST: '/user/list-user',
   },
 };
 

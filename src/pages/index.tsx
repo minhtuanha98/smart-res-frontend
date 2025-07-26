@@ -1,11 +1,11 @@
 import React from 'react';
-import LoginTemplate from '../components/templates/LoginTemplate';
 import { useLogin } from '@/hooks/useLogin';
+import LoginTemplate from '@/components/templates/LoginTemplate';
 
 const UserLoginPage = () => {
   const { formik } = useLogin();
 
-  return <LoginTemplate title='Đăng nhập' formik={formik} />;
+  return <LoginTemplate title='Login' formik={formik} />;
 };
 
 export default UserLoginPage;

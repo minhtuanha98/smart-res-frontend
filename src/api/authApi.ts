@@ -1,16 +1,10 @@
 import axiosInstance from '@/configs/api';
+import { API_ENDPOINTS } from '@/constants/config';
+import { LoginPayload, LoginResponse } from '@/types';
 import { queryKeys } from '@/utils/query-client';
 import { useMutation, UseMutationOptions } from '@tanstack/react-query';
 
-interface LoginPayload {
-  username: string;
-  password: string;
-}
-
-interface LoginResponse {
-  // Define the expected response shape here if known
-  [key: string]: any;
-}
+const { LOGIN, LOGOUT } = API_ENDPOINTS.AUTH;
 
 export const useLoginMutationApi = (
   options?: UseMutationOptions<LoginResponse, Error, LoginPayload>
@@ -18,7 +12,7 @@ export const useLoginMutationApi = (
   return useMutation<LoginResponse, Error, LoginPayload>({
     mutationKey: queryKeys.auth.user(),
     mutationFn: async (payload: LoginPayload) => {
-      return axiosInstance.post('/user/login', payload);
+      return axiosInstance.post(LOGIN, payload);
     },
     ...options,
   });
@@ -28,7 +22,7 @@ export const useLogoutApi = (options?: UseMutationOptions<Error, void>) => {
   return useMutation<Error, void>({
     mutationKey: queryKeys.auth.logout(),
     mutationFn: async () => {
-      return axiosInstance.post('/user/logout');
+      return axiosInstance.post(LOGOUT);
     },
     ...options,
   });

@@ -25,7 +25,7 @@
       "@/styles/*": ["./src/styles/*"],
       "@/assets/*": ["./src/assets/*"],
       "@/middleware/*": ["src/schemas/*"],
-      "@/api/*": ["src/schemas/*"]
+      "@/api/*": ["src/api/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

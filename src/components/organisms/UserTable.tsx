@@ -1,6 +1,6 @@
 import React from 'react';
-import Table, { Column } from '../atoms/Table';
-import Pagination from '../atoms/Pagination';
+import Table, { Column } from '@/components/atoms/Table';
+import Pagination from '@/components/atoms/Pagination';
 import { Box } from '@mui/material';
 import {
   IconButton,
@@ -14,14 +14,14 @@ import {
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { User } from '../../api/userApi';
+import { User } from '@/types/userType';
 
 const columns: Column[] = [
   { id: 'stt', label: 'STT', minWidth: 40 },
-  { id: 'username', label: 'username', minWidth: 120 },
+  { id: 'username', label: 'Username', minWidth: 120 },
   { id: 'email', label: 'Email', minWidth: 150 },
-  { id: 'phone', label: 'Số điện thoại', minWidth: 120 },
-  { id: 'apartment', label: 'Căn hộ', minWidth: 80 },
+  { id: 'phone', label: 'Phone number', minWidth: 120 },
+  { id: 'apartment', label: 'Apartment', minWidth: 80 },
   { id: 'action', label: 'Action', minWidth: 120 },
 ];
 
@@ -111,7 +111,7 @@ const UserTable: React.FC<UserTableProps> = ({
         />
       </div>
       <Dialog open={open} onClose={handleClose} maxWidth='xs'>
-        <DialogTitle>Cập nhật thông tin user</DialogTitle>
+        <DialogTitle>Update user information</DialogTitle>
         <DialogContent>
           <TextField
             margin='dense'
@@ -132,7 +132,7 @@ const UserTable: React.FC<UserTableProps> = ({
           />
           <TextField
             margin='dense'
-            label='Số điện thoại'
+            label='Phone number'
             fullWidth
             value={editUser.phone || ''}
             onChange={e => setEditUser({ ...editUser, phone: e.target.value })}
@@ -140,7 +140,7 @@ const UserTable: React.FC<UserTableProps> = ({
 
           <TextField
             margin='dense'
-            label='Căn hộ'
+            label='Apartment'
             fullWidth
             value={editUser.apartNumber || ''}
             onChange={e =>
@@ -149,9 +149,9 @@ const UserTable: React.FC<UserTableProps> = ({
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Hủy</Button>
+          <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleSave} variant='contained'>
-            Lưu
+            Save
           </Button>
         </DialogActions>
       </Dialog>

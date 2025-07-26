@@ -1,6 +1,6 @@
 import React from 'react';
 import { TextField, Box, Typography } from '@mui/material';
-import ButtonBase from '../atoms/ButtonBase';
+import ButtonBase from '@/components/atoms/ButtonBase';
 
 interface UserFeedbackInputProps {
   formik?: any;
@@ -22,7 +22,7 @@ const UserFeedbackInput: React.FC<UserFeedbackInputProps> = ({
       >
         <div>
           <TextField
-            label='Tiêu đề'
+            label='Title'
             name='title'
             value={formik?.values?.title || ''}
             onChange={formik.handleChange || (() => {})}
@@ -42,7 +42,7 @@ const UserFeedbackInput: React.FC<UserFeedbackInputProps> = ({
         </div>
         <div>
           <TextField
-            label='Căn hộ'
+            label='Apartment'
             name='apartNumber'
             value={formik?.values?.apartNumber || ''}
             onChange={formik.handleChange || (() => {})}
@@ -63,7 +63,7 @@ const UserFeedbackInput: React.FC<UserFeedbackInputProps> = ({
         </div>
         <div>
           <TextField
-            label='Nội dung chi tiết'
+            label='Details'
             name='content'
             value={formik?.values?.content || ''}
             onChange={formik.handleChange || (() => {})}
@@ -94,7 +94,7 @@ const UserFeedbackInput: React.FC<UserFeedbackInputProps> = ({
           />
           {formik.values.image && (
             <span>
-              Đã chọn: {formik.values.image.name || 'Chưa có tệp nào được chọn'}
+              Choose: {formik.values.image.name || 'No files selected yet'}
             </span>
           )}
         </div>
@@ -105,7 +105,7 @@ const UserFeedbackInput: React.FC<UserFeedbackInputProps> = ({
           disabled={isLoading}
           className='mt-4 w-full'
         >
-          {isLoading ? 'Đang gửi...' : 'Gửi phản ánh'}
+          {isLoading ? 'Sending...' : 'Send Feedback'}
         </ButtonBase>
       </form>
     </Box>

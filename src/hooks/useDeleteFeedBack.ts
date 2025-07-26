@@ -1,7 +1,10 @@
-import { useDeleteFeedBackApi } from '../api/feedbackApi';
 import { toast } from 'react-toastify';
 import { useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/utils/query-client';
+import { MESSAGE } from '@/constants/message';
+import { useDeleteFeedBackApi } from '@/api/feedbackApi';
+
+const { FEEDBACK_DELETED, DELETE_FEEDBACK_FAIL } = MESSAGE.FEEDBACK;
 
 interface sendError {
   response?: {
@@ -20,11 +23,11 @@ export const useDeleteFeedBack = () => {
       queryClient.invalidateQueries({
         queryKey: [queryKeys.feedback.listFeedBack()],
       });
-      toast('Feedback delete successfully!');
+      toast(FEEDBACK_DELETED);
     },
     onError: (error: sendError) => {
       toast(
-        'delete failed: ' + (error.response?.data?.message || error.message)
+        DELETE_FEEDBACK_FAIL + (error.response?.data?.message || error.message)
       );
     },
   });

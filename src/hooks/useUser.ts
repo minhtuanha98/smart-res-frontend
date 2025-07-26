@@ -1,12 +1,7 @@
-import { useGetAllUserApi } from '../api/userApi';
+import { useGetAllUserApi } from '@/api/userApi';
+import { PayloadType } from '@/types/feedBackType';
 
-interface dataType {
-  page?: string;
-  limit?: string;
-  status?: string;
-}
-
-export const useUser = (params: dataType) => {
+export const useUser = (params: PayloadType) => {
   const { page, limit, status } = params;
   const { data, error, isLoading } = useGetAllUserApi({
     page: page,

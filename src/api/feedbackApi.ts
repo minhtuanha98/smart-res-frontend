@@ -1,4 +1,10 @@
 import axiosInstance from '@/configs/api';
+import { API_ENDPOINTS } from '@/constants/config';
+import {
+  FeedbackListResponse,
+  FeedBackPayload,
+  PayloadType,
+} from '@/types/feedBackType';
 import { queryKeys } from '@/utils/query-client';
 import {
   useMutation,
@@ -6,42 +12,13 @@ import {
   useQuery,
 } from '@tanstack/react-query';
 
-interface PayloadType {
-  page?: string;
-  limit?: string;
-  status?: string;
-}
+const { USER_LIST, USER_FEEDBACK } = API_ENDPOINTS.FEEDBACK;
 
-interface FeedBackPayload {
-  title: string;
-  apartNumber: string;
-  content: string;
-  image: File | null;
-  status: string;
-}
-
-export interface FeedbackItem {
-  id: string;
-  title: string;
-  content: string;
-  apartNumber: string;
-  userId: string;
-  imageUrl: string | null;
-  status: string;
-  createdAt: string;
-}
-
-export interface FeedbackListResponse {
-  feedBacks: FeedbackItem[];
-  total: number;
-  page: number | null;
-  limit: number | null;
-}
 export const useGetFeedBackApi = (payload: PayloadType) => {
   return useQuery<FeedbackListResponse, Error>({
     queryKey: [queryKeys.feedback.listFeedBack(), payload],
     queryFn: async () => {
-      const { data } = await axiosInstance.get('/user/list/feedbacks', {
+      const { data } = await axiosInstance.get(USER_LIST, {
         params: payload,
       });
       return data;
@@ -55,7 +32,6 @@ export const useCreateFeedBackApi = (
   return useMutation<any, Error, FeedBackPayload>({
     mutationKey: queryKeys.feedback.createFeedBack(),
     mutationFn: async (payload: FeedBackPayload) => {
-      // Tạo FormData để gửi file
       const formData = new FormData();
       formData.append('title', payload.title);
       formData.append('content', payload.content);
@@ -66,25 +42,10 @@ export const useCreateFeedBackApi = (
         formData.append('image', payload.image);
       }
 
-      const { data } = await axiosInstance.post('/user/feedback', formData, {
+      const { data } = await axiosInstance.post(USER_FEEDBACK, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-      });
-      return data;
-    },
-    ...options,
-  });
-};
-
-export const useUpdateFeedBackStatusApi = (
-  options?: UseMutationOptions<any, Error, { id: string; status: string }>
-) => {
-  return useMutation<any, Error, { id: string; status: string }>({
-    mutationKey: queryKeys.feedback.updateFeedBackStatus(),
-    mutationFn: async ({ id, status }: { id: string; status: string }) => {
-      const { data } = await axiosInstance.put(`/admin/feedback/${id}/status`, {
-        status,
       });
       return data;
     },
@@ -98,7 +59,7 @@ export const useDeleteFeedBackApi = (
   return useMutation<any, Error, string>({
     mutationKey: queryKeys.feedback.deleteFeedBack(),
     mutationFn: async (id: string) => {
-      const { data } = await axiosInstance.delete(`/user/feedback/${id}`);
+      const { data } = await axiosInstance.delete(`${USER_FEEDBACK}/${id}`);
       return data;
     },
     ...options,
@@ -111,7 +72,7 @@ export const useUpdateStatusApi = (
   return useMutation<any, Error, { id: string; status: string }>({
     mutationKey: queryKeys.feedback.updateFeedBackStatus(),
     mutationFn: async ({ id, status }: { id: string; status: string }) => {
-      const { data } = await axiosInstance.put(`/user/feedback/${id}`, {
+      const { data } = await axiosInstance.put(`${USER_FEEDBACK}/${id}`, {
         status,
       });
       return data;

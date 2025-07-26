@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, TextField } from '@mui/material';
-import ButtonBase from '../atoms/ButtonBase';
+import ButtonBase from '@/components/atoms/ButtonBase';
 
 interface SearchFormProps {
   value: string;
@@ -31,7 +31,7 @@ const SearchForm: React.FC<SearchFormProps> = ({
       className='h-full'
       style={{ minWidth: 0, width: '150px', height: '56px' }}
     >
-      Tìm Kiếm
+      Search
     </ButtonBase>
   </Box>
 );

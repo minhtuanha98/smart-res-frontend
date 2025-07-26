@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import LinearProgress from '@mui/material/LinearProgress';
 import {
   IconButton,
   Dialog,
@@ -9,11 +8,10 @@ import {
   Select,
   MenuItem,
   FormControl,
-  CircularProgress,
 } from '@mui/material';
-import Table, { Column } from '../atoms/Table';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Table, { Column } from '@/components/atoms/Table';
 // Update the path below to the correct relative path if needed
 export interface UserFeedback {
   id: string;
@@ -56,15 +54,15 @@ export const FeedbackTable = ({
 
   const columns: Column[] = [
     { id: 'stt', label: 'STT', minWidth: 40 },
-    { id: 'title', label: 'Tiêu đề', minWidth: 120 },
-    { id: 'apartment', label: 'Căn hộ', minWidth: 80 },
-    { id: 'content', label: 'Nội dung chi tiết', minWidth: 200 },
-    { id: 'status', label: 'Trạng thái', minWidth: 100 },
-    { id: 'image', label: 'Hình ảnh', minWidth: 60 },
+    { id: 'title', label: 'Title', minWidth: 120 },
+    { id: 'apartment', label: 'Apartment', minWidth: 80 },
+    { id: 'content', label: 'Detail', minWidth: 200 },
+    { id: 'status', label: 'Status', minWidth: 100 },
+    { id: 'image', label: 'Image', minWidth: 60 },
     ...(userRole === 'admin'
       ? [
-          { id: 'statusChange', label: 'Thay đổi trạng thái', minWidth: 120 },
-          { id: 'action', label: 'Hành động', minWidth: 80 },
+          { id: 'statusChange', label: 'Change Status', minWidth: 120 },
+          { id: 'action', label: 'Action', minWidth: 80 },
         ]
       : []),
   ];
@@ -92,8 +90,8 @@ export const FeedbackTable = ({
                 size='small'
                 disabled={row.status === 'resolved'}
               >
-                <MenuItem value='pending'>Chờ xử lý</MenuItem>
-                <MenuItem value='resolved'>Hoàn thành</MenuItem>
+                <MenuItem value='pending'>Pending</MenuItem>
+                <MenuItem value='resolved'>Completed</MenuItem>
               </Select>
             </FormControl>
           ),
@@ -120,13 +118,13 @@ export const FeedbackTable = ({
             : [
                 {
                   specialEmptyRow: true,
-                  message: 'Không có dữ liệu',
+                  message: 'No Data Available',
                 },
               ]
         }
       />
       <Dialog open={open} onClose={handleClose} maxWidth='sm'>
-        <DialogTitle>Chi tiết phản ánh</DialogTitle>
+        <DialogTitle> Feed Back Detail</DialogTitle>
         <DialogContent
           sx={{
             bgcolor: 'white',
@@ -147,16 +145,16 @@ export const FeedbackTable = ({
           {selected && (
             <>
               <DialogContentText>
-                <b>Tiêu đề:</b> {selected.title}
+                <b>Title:</b> {selected.title}
               </DialogContentText>
               <DialogContentText>
-                <b>Căn hộ:</b> {selected.apartNumber}
+                <b>Apartment:</b> {selected.apartNumber}
               </DialogContentText>
               <DialogContentText>
-                <b>Nội dung:</b> {selected.content}
+                <b>Detail:</b> {selected.content}
               </DialogContentText>
               <DialogContentText>
-                <b>Trạng thái:</b> {selected.status}
+                <b>Status:</b> {selected.status}
               </DialogContentText>
               {selected.imageUrl && (
                 // eslint-disable-next-line @next/next/no-img-element
