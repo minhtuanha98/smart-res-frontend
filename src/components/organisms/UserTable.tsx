@@ -1,39 +1,7 @@
 import React from 'react';
 import Table, { Column } from '../atoms/Table';
 import Pagination from '../atoms/Pagination';
-import { Box, Chip } from '@mui/material';
-
-const columns: Column[] = [
-  { id: 'name', label: 'Họ tên', minWidth: 120 },
-  { id: 'email', label: 'Email', minWidth: 150 },
-  { id: 'phone', label: 'Số điện thoại', minWidth: 120 },
-  { id: 'apartment', label: 'Căn hộ', minWidth: 80 },
-  { id: 'status', label: 'Trạng thái', minWidth: 100 },
-  { id: 'action', label: 'Action', minWidth: 120 },
-];
-
-export interface User {
-  name: string;
-  email: string;
-  phone: string;
-  apartment: string;
-  status: 'active' | 'inactive' | 'pending';
-}
-
-interface UserTableProps {
-  users: User[];
-  page: number;
-  pageSize: number;
-  _total: number;
-  onPageChange: (page: number) => void;
-}
-
-const statusColor = {
-  active: 'success',
-  inactive: 'default',
-  pending: 'warning',
-} as const;
-
+import { Box } from '@mui/material';
 import {
   IconButton,
   Dialog,
@@ -42,12 +10,28 @@ import {
   DialogActions,
   Button,
   TextField,
-  MenuItem,
-  Select,
   Box as MuiBox,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { User } from '../../api/userApi';
+
+const columns: Column[] = [
+  { id: 'stt', label: 'STT', minWidth: 40 },
+  { id: 'username', label: 'username', minWidth: 120 },
+  { id: 'email', label: 'Email', minWidth: 150 },
+  { id: 'phone', label: 'Số điện thoại', minWidth: 120 },
+  { id: 'apartment', label: 'Căn hộ', minWidth: 80 },
+  { id: 'action', label: 'Action', minWidth: 120 },
+];
+
+interface UserTableProps {
+  users: User[];
+  page: number;
+  pageSize: number;
+  _total: number;
+  onPageChange: (page: number) => void;
+}
 
 const UserTable: React.FC<UserTableProps> = ({
   users,
@@ -89,21 +73,12 @@ const UserTable: React.FC<UserTableProps> = ({
     setLocalUsers(prev => prev.filter((_, i) => i !== idx));
   };
 
-  const data = localUsers.map((u, idx) => ({
-    ...u,
-    status: (
-      <Chip
-        label={
-          u.status === 'active'
-            ? 'Hoạt động'
-            : u.status === 'inactive'
-              ? 'Ngưng'
-              : 'Chờ duyệt'
-        }
-        color={statusColor[u.status]}
-        size='small'
-      />
-    ),
+  const data = users?.map((row, idx) => ({
+    stt: (page - 1) * pageSize + idx + 1,
+    username: row.username,
+    email: row.email,
+    phone: row.phone,
+    apartment: row.apartNumber,
     action: (
       <MuiBox display='flex' gap={1}>
         <IconButton
@@ -140,10 +115,20 @@ const UserTable: React.FC<UserTableProps> = ({
         <DialogContent>
           <TextField
             margin='dense'
-            label='Họ tên'
+            label='Username'
             fullWidth
-            value={editUser.name || ''}
-            onChange={e => setEditUser({ ...editUser, name: e.target.value })}
+            value={editUser.username || ''}
+            onChange={e =>
+              setEditUser({ ...editUser, username: e.target.value })
+            }
+          />
+          <TextField
+            disabled
+            margin='dense'
+            label='Email'
+            fullWidth
+            value={editUser.email || ''}
+            onChange={e => setEditUser({ ...editUser, email: e.target.value })}
           />
           <TextField
             margin='dense'
@@ -152,38 +137,15 @@ const UserTable: React.FC<UserTableProps> = ({
             value={editUser.phone || ''}
             onChange={e => setEditUser({ ...editUser, phone: e.target.value })}
           />
+
           <TextField
             margin='dense'
             label='Căn hộ'
             fullWidth
-            value={editUser.apartment || ''}
+            value={editUser.apartNumber || ''}
             onChange={e =>
-              setEditUser({ ...editUser, apartment: e.target.value })
+              setEditUser({ ...editUser, apartNumber: e.target.value })
             }
-          />
-          <Select
-            margin='dense'
-            fullWidth
-            value={editUser.status || 'active'}
-            onChange={e =>
-              setEditUser({
-                ...editUser,
-                status: e.target.value as User['status'],
-              })
-            }
-            sx={{ mt: 2 }}
-          >
-            <MenuItem value='active'>Hoạt động</MenuItem>
-            <MenuItem value='inactive'>Ngưng</MenuItem>
-            <MenuItem value='pending'>Chờ duyệt</MenuItem>
-          </Select>
-          <TextField
-            margin='dense'
-            label='Email'
-            fullWidth
-            value={editUser.email || ''}
-            disabled
-            sx={{ mt: 2 }}
           />
         </DialogContent>
         <DialogActions>

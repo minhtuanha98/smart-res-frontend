@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, TextField } from '@mui/material';
-import Input from '../atoms/Input';
 import ButtonBase from '../atoms/ButtonBase';
 
 interface SearchFormProps {

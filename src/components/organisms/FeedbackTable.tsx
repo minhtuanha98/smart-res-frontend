@@ -1,71 +1,52 @@
 import React, { useState } from 'react';
-import Table, { Column } from '../atoms/Table';
-import Pagination from '../atoms/Pagination';
+import LinearProgress from '@mui/material/LinearProgress';
 import {
-  Box,
-  Chip,
+  IconButton,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogContentText,
-  IconButton,
   Select,
   MenuItem,
+  FormControl,
+  CircularProgress,
 } from '@mui/material';
+import Table, { Column } from '../atoms/Table';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import Image from 'next/image';
-
-export interface Feedback {
-  name: string;
-  apartment: string;
+import DeleteIcon from '@mui/icons-material/Delete';
+// Update the path below to the correct relative path if needed
+export interface UserFeedback {
+  id: string;
   title: string;
   content: string;
-  image?: string;
-  status: 'pending' | 'resolved' | 'in_progress';
+  apartNumber: string;
+  userId: string;
+  imageUrl: string | null;
+  status: string;
 }
 
-interface FeedbackTableProps {
-  feedbacks: Feedback[];
+interface UserFeedbackTableProps {
   page: number;
   pageSize: number;
-  total: number;
-  onPageChange: (page: number) => void;
+  data?: UserFeedback[];
+  onDelete: (id: string) => void;
+  onStatusChange: (id: string, newStatus: string) => void;
+  userRole?: 'admin' | 'user';
 }
 
-const columns: Column[] = [
-  { id: 'name', label: 'Họ tên', minWidth: 120 },
-  { id: 'apartment', label: 'Căn hộ', minWidth: 80 },
-  { id: 'title', label: 'Tiêu đề', minWidth: 120 },
-  { id: 'shortContent', label: 'Nội dung chi tiết', minWidth: 200 },
-  { id: 'status', label: 'Trạng thái', minWidth: 100 },
-  { id: 'detail', label: 'Chi tiết', minWidth: 60 },
-  { id: 'action', label: 'Cập nhật trạng thái', minWidth: 160 },
-];
-
-const statusColor: Record<Feedback['status'], 'warning' | 'success' | 'info'> =
-  {
-    pending: 'warning',
-    resolved: 'success',
-    in_progress: 'info',
-  };
-
-const FeedbackTable: React.FC<FeedbackTableProps> = ({
-  feedbacks,
+export const FeedbackTable = ({
   page,
   pageSize,
-  total,
-  onPageChange,
-}) => {
+  data = [],
+  onDelete,
+  onStatusChange,
+  userRole = 'user',
+}: UserFeedbackTableProps) => {
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState<Feedback | null>(null);
-  const [localFeedbacks, setLocalFeedbacks] = useState<Feedback[]>(feedbacks);
+  const [selected, setSelected] = useState<UserFeedback | null>(null);
 
-  React.useEffect(() => {
-    setLocalFeedbacks(feedbacks);
-  }, [feedbacks]);
-
-  const handleOpen = (fb: Feedback) => {
-    setSelected(fb);
+  const handleOpen = (row: UserFeedback) => {
+    setSelected(row);
     setOpen(true);
   };
   const handleClose = () => {
@@ -73,103 +54,123 @@ const FeedbackTable: React.FC<FeedbackTableProps> = ({
     setSelected(null);
   };
 
-  const handleChangeStatus = (id: number, newStatus: Feedback['status']) => {
-    setLocalFeedbacks(prev =>
-      prev.map((f, idx) => (idx === id ? { ...f, status: newStatus } : f))
-    );
-  };
+  const columns: Column[] = [
+    { id: 'stt', label: 'STT', minWidth: 40 },
+    { id: 'title', label: 'Tiêu đề', minWidth: 120 },
+    { id: 'apartment', label: 'Căn hộ', minWidth: 80 },
+    { id: 'content', label: 'Nội dung chi tiết', minWidth: 200 },
+    { id: 'status', label: 'Trạng thái', minWidth: 100 },
+    { id: 'image', label: 'Hình ảnh', minWidth: 60 },
+    ...(userRole === 'admin'
+      ? [
+          { id: 'statusChange', label: 'Thay đổi trạng thái', minWidth: 120 },
+          { id: 'action', label: 'Hành động', minWidth: 80 },
+        ]
+      : []),
+  ];
 
-  const handleDelete = (id: number) => {
-    setLocalFeedbacks(prev => prev.filter((_, idx) => idx !== id));
-  };
-
-  const data = localFeedbacks.map((f, idx) => ({
-    ...f,
-    shortContent:
-      f.content.length > 30 ? f.content.slice(0, 30) + '...' : f.content,
-    status: (
-      <Chip
-        label={
-          f.status === 'pending'
-            ? 'Chờ xử lý'
-            : f.status === 'resolved'
-              ? 'Đã xử lý'
-              : 'Đang xử lý'
-        }
-        color={statusColor[f.status]}
-        size='small'
-      />
-    ),
-    detail: (
-      <IconButton aria-label='Xem chi tiết' onClick={() => handleOpen(f)}>
+  const tableData = data?.map((row: UserFeedback, idx: number) => ({
+    stt: (page - 1) * pageSize + idx + 1,
+    title: row.title,
+    apartment: row.apartNumber,
+    content:
+      row.content.length > 30 ? row.content.slice(0, 30) + '...' : row.content,
+    status: row.status,
+    image: (
+      <IconButton onClick={() => handleOpen(row)}>
         <VisibilityIcon />
       </IconButton>
     ),
-    action: (
-      <Box display='flex' alignItems='center' gap={1}>
-        <Select
-          size='small'
-          value={f.status}
-          onChange={e =>
-            handleChangeStatus(idx, e.target.value as Feedback['status'])
-          }
-          sx={{ minWidth: 120 }}
-        >
-          <MenuItem value='pending'>Chờ xử lý</MenuItem>
-          <MenuItem value='in_progress'>Đang xử lý</MenuItem>
-          <MenuItem value='resolved'>Đã xử lý</MenuItem>
-        </Select>
-        <IconButton
-          aria-label='Xóa'
-          onClick={() => handleDelete(idx)}
-          size='small'
-          color='error'
-        >
-          <span role='img' aria-label='delete'>
-            🗑️
-          </span>
-        </IconButton>
-      </Box>
-    ),
+    ...(userRole === 'admin'
+      ? {
+          statusChange: (
+            <FormControl size='small'>
+              <Select
+                value={row.status}
+                onChange={e => onStatusChange(row.id, e.target.value)}
+                variant='outlined'
+                size='small'
+                disabled={row.status === 'resolved'}
+              >
+                <MenuItem value='pending'>Chờ xử lý</MenuItem>
+                <MenuItem value='resolved'>Hoàn thành</MenuItem>
+              </Select>
+            </FormControl>
+          ),
+          action: (
+            <IconButton
+              disabled={row.status === 'pending'}
+              color='error'
+              onClick={() => onDelete(row.id)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          ),
+        }
+      : {}),
   }));
 
   return (
-    <Box>
-      <Table columns={columns} data={data} />
-      <div className='flex justify-end mt-2'>
-        <Pagination
-          count={Math.ceil(localFeedbacks.length / pageSize)}
-          page={page}
-          onChange={(_, value) => onPageChange(value)}
-        />
-      </div>
+    <>
+      <Table
+        columns={columns}
+        data={
+          tableData?.length
+            ? tableData
+            : [
+                {
+                  specialEmptyRow: true,
+                  message: 'Không có dữ liệu',
+                },
+              ]
+        }
+      />
       <Dialog open={open} onClose={handleClose} maxWidth='sm'>
         <DialogTitle>Chi tiết phản ánh</DialogTitle>
-        <DialogContent>
+        <DialogContent
+          sx={{
+            bgcolor: 'white',
+            maxHeight: 400,
+            overflowY: 'auto',
+            '&::-webkit-scrollbar': {
+              width: 8,
+              backgroundColor: '#fff',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: '#e0e0e0',
+              borderRadius: 4,
+            },
+            scrollbarColor: '#e0e0e0 #fff',
+            scrollbarWidth: 'thin',
+          }}
+        >
           {selected && (
             <>
               <DialogContentText>
-                <b>Tiêu đề:</b> {selected.title || '(Không có tiêu đề)'}
+                <b>Tiêu đề:</b> {selected.title}
               </DialogContentText>
               <DialogContentText>
-                <b>Nội dung:</b> {selected.content || '(Không có nội dung)'}
+                <b>Căn hộ:</b> {selected.apartNumber}
               </DialogContentText>
-              {selected.image && (
-                <Box mt={2} borderRadius={2} overflow='hidden'>
-                  <Image
-                    src={selected.image}
-                    alt='feedback'
-                    width={400}
-                    height={250}
-                    style={{ width: '100%', height: 'auto', borderRadius: 8 }}
-                  />
-                </Box>
+              <DialogContentText>
+                <b>Nội dung:</b> {selected.content}
+              </DialogContentText>
+              <DialogContentText>
+                <b>Trạng thái:</b> {selected.status}
+              </DialogContentText>
+              {selected.imageUrl && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={selected.imageUrl}
+                  alt='feedback'
+                  className='w-full max-w-md h-auto rounded mt-2'
+                />
               )}
             </>
           )}
         </DialogContent>
       </Dialog>
-    </Box>
+    </>
   );
 };
 

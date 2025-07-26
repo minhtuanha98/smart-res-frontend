@@ -1,184 +1,50 @@
-import React, { useState, useMemo } from 'react';
-import UserTable, { User } from '@/components/organisms/UserTable';
+import React, { useState, useEffect } from 'react';
+import UserTable from '@/components/organisms/UserTable';
 import SearchForm from '@/components/molecules/SearchForm';
-import FeedbackTable, { Feedback } from '@/components/organisms/FeedbackTable';
 import DashboardLayout from '@/components/templates/DashboardLayout';
 import { useLogout } from '@/hooks/useLogout';
+import { useFeedBack } from '@/hooks/useFeedBack';
 
-const MOCK_USERS: User[] = [
-  {
-    name: 'Nguyễn Văn A',
-    email: 'a@gmail.com',
-    phone: '0901234567',
-    apartment: 'A101',
-    status: 'active',
-  },
-  {
-    name: 'Trần Thị B',
-    email: 'b@gmail.com',
-    phone: '0912345678',
-    apartment: 'B202',
-    status: 'inactive',
-  },
-  {
-    name: 'Lê Văn C',
-    email: 'c@gmail.com',
-    phone: '0923456789',
-    apartment: 'C303',
-    status: 'pending',
-  },
-  {
-    name: 'Phạm Thị D',
-    email: 'd@gmail.com',
-    phone: '0934567890',
-    apartment: 'D404',
-    status: 'active',
-  },
-  {
-    name: 'Vũ Văn E',
-    email: 'e@gmail.com',
-    phone: '0945678901',
-    apartment: 'E505',
-    status: 'active',
-  },
-  {
-    name: 'Đỗ Thị F',
-    email: 'f@gmail.com',
-    phone: '0956789012',
-    apartment: 'F606',
-    status: 'inactive',
-  },
-  {
-    name: 'Ngô Văn G',
-    email: 'g@gmail.com',
-    phone: '0967890123',
-    apartment: 'G707',
-    status: 'pending',
-  },
-  {
-    name: 'Bùi Thị H',
-    email: 'h@gmail.com',
-    phone: '0978901234',
-    apartment: 'H808',
-    status: 'active',
-  },
-  {
-    name: 'Hoàng Văn I',
-    email: 'i@gmail.com',
-    phone: '0989012345',
-    apartment: 'I909',
-    status: 'active',
-  },
-  {
-    name: 'Phan Thị K',
-    email: 'k@gmail.com',
-    phone: '0990123456',
-    apartment: 'K010',
-    status: 'inactive',
-  },
-];
+import { useUpdateFeedBack } from '@/hooks/useUpdateFeedBack';
+import FeedbackTable from '@/components/organisms/FeedbackTable';
 
-const MOCK_FEEDBACKS: Feedback[] = [
-  {
-    name: 'Nguyễn Văn A',
-    apartment: 'A101',
-    title: 'Nước yếu',
-    content:
-      'Nước trong phòng tắm chảy rất yếu, không đủ dùng cho sinh hoạt hàng ngày.',
-    image: '/assets/images/coffee.jpeg',
-    status: 'pending',
-  },
-  {
-    name: 'Trần Thị B',
-    apartment: 'B202',
-    title: 'Thang máy hỏng',
-    content:
-      'Thang máy số 1 không hoạt động từ sáng nay, mong ban quản lý kiểm tra.',
-    image: '/assets/images/coffee.jpeg',
-    status: 'resolved',
-  },
-  {
-    name: 'Lê Văn C',
-    apartment: 'C303',
-    title: 'Mất điện',
-    content: 'Cúp điện đột ngột vào tối qua, hành lang không có đèn.',
-    image: '/assets/images/coffee.jpeg',
-    status: 'pending',
-  },
-  {
-    name: 'Phạm Thị D',
-    apartment: 'D404',
-    title: 'Bảo vệ không trực',
-    content: 'Tối qua không thấy bảo vệ trực ở sảnh, gây lo lắng cho cư dân.',
-    image: '/assets/images/coffee.jpeg',
-    status: 'resolved',
-  },
-  {
-    name: 'Vũ Văn E',
-    apartment: 'E505',
-    title: 'Rác chưa thu gom',
-    content: 'Rác ở hành lang tầng 5 chưa được thu gom trong 2 ngày.',
-    image: '/assets/images/coffee.jpeg',
-    status: 'pending',
-  },
-  {
-    name: 'Đỗ Thị F',
-    apartment: 'F606',
-    title: 'Cửa ra vào hỏng',
-    content: 'Cửa ra vào tầng 6 bị kẹt, khó mở và đóng.',
-    image: '/assets/images/coffee.jpeg',
-    status: 'resolved',
-  },
-];
+import { useDeleteFeedBack } from '@/hooks/useDeleteFeedBack';
+import { Box, CircularProgress, Pagination } from '@mui/material';
+import { useUser } from '@/hooks/useUser';
 
-const PAGE_SIZE = 5;
-
-const DashboardPage: React.FC = () => {
+const ManagerPage: React.FC = () => {
   const [tab, setTab] = useState<'user' | 'feedback'>('user');
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const { logoutHandler } = useLogout();
+  const [pageSize, setPageSize] = useState(10);
+  const { data } = useFeedBack({
+    page: String(page),
+    limit: String(pageSize),
+  });
+  const { updateStatusMutation } = useUpdateFeedBack();
+  const { deleteFeedBack } = useDeleteFeedBack();
+  const { users, isLoading } = useUser({
+    page: String(page),
+    limit: String(pageSize),
+  });
 
-  // Filtered data
-  const filteredUsers = useMemo(
-    () =>
-      MOCK_USERS.filter(
-        u =>
-          u.name.toLowerCase().includes(search.toLowerCase()) ||
-          u.email.toLowerCase().includes(search.toLowerCase()) ||
-          u.phone.includes(search) ||
-          u.apartment.toLowerCase().includes(search.toLowerCase())
-      ),
-    [search]
-  );
-  const filteredFeedbacks = useMemo(
-    () =>
-      MOCK_FEEDBACKS.filter(
-        f =>
-          f.name.toLowerCase().includes(search.toLowerCase()) ||
-          f.apartment.toLowerCase().includes(search.toLowerCase()) ||
-          f.content.toLowerCase().includes(search.toLowerCase())
-      ),
-    [search]
-  );
-
-  // Pagination
-  const pagedUsers = useMemo(
-    () => filteredUsers.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
-    [filteredUsers, page]
-  );
-  const pagedFeedbacks = useMemo(
-    () => filteredFeedbacks.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
-    [filteredFeedbacks, page]
-  );
-
-  // Reset page when tab/search changes
-  React.useEffect(() => {
-    setPage(1);
-  }, [tab, search]);
+  useEffect(() => {
+    if (data?.page && data.page !== page) setPage(data.page);
+    if (data?.limit && data.limit !== pageSize) setPageSize(data.limit);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data?.page, data?.limit]);
 
   const handleLogout = () => {
     logoutHandler.mutate();
+  };
+
+  const handleDelete = (id: string) => {
+    deleteFeedBack.mutate(id);
+  };
+
+  const handleStatusChange = (id: string, newStatus: string) => {
+    updateStatusMutation.mutate({ id, status: newStatus });
   };
 
   return (
@@ -196,24 +62,63 @@ const DashboardPage: React.FC = () => {
         }
       />
       {tab === 'user' ? (
-        <UserTable
-          users={pagedUsers}
-          page={page}
-          pageSize={PAGE_SIZE}
-          _total={filteredUsers.length}
-          onPageChange={setPage}
-        />
+        <>
+          {isLoading ? (
+            <div className='min-h-[200px] flex items-center justify-center'>
+              <CircularProgress color='success' />
+            </div>
+          ) : (
+            <>
+              <UserTable
+                page={users?.page ?? 1}
+                users={users?.users ?? []}
+                pageSize={pageSize}
+                _total={users?.total ?? 0}
+                onPageChange={setPage}
+              />
+              <Box display='flex' justifyContent='center' mt={2}>
+                <Pagination
+                  count={Math.ceil((users?.total ?? 1) / (users?.limit ?? 5))}
+                  page={page}
+                  onChange={(_, value) => setPage(value)}
+                  color='primary'
+                />
+              </Box>
+            </>
+          )}
+        </>
       ) : (
-        <FeedbackTable
-          feedbacks={pagedFeedbacks}
-          page={page}
-          pageSize={PAGE_SIZE}
-          total={filteredFeedbacks.length}
-          onPageChange={setPage}
-        />
+        <>
+          {isLoading ? (
+            <div className='min-h-[200px] flex items-center justify-center'>
+              <CircularProgress color='success' />
+            </div>
+          ) : (
+            <>
+              <FeedbackTable
+                page={data?.page ?? 1}
+                pageSize={pageSize}
+                data={data?.feedBacks ?? []}
+                onDelete={handleDelete}
+                onStatusChange={handleStatusChange}
+                userRole='admin'
+              />
+              {(data?.feedBacks?.length ?? 0) > 0 && (
+                <Box display='flex' justifyContent='center' mt={2}>
+                  <Pagination
+                    count={Math.ceil((data?.total ?? 1) / (data?.limit ?? 5))}
+                    page={page}
+                    onChange={(_, value) => setPage(value)}
+                    color='primary'
+                  />
+                </Box>
+              )}
+            </>
+          )}
+        </>
       )}
     </DashboardLayout>
   );
 };
 
-export default DashboardPage;
+export default ManagerPage;
