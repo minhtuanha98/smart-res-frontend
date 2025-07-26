@@ -79,17 +79,18 @@ export const queryKeys = {
   auth: {
     user: () => ['auth', 'user'] as const,
     logout: () => ['logout'] as const,
-    profile: (userId: string) => ['auth', 'profile', userId] as const,
   },
 
+  // feedback
+  feedback: {
+    listFeedBack: () => ['feedBackList'] as const,
+    createFeedBack: () => ['feedBack'] as const,
+    updateFeedBackStatus: () => ['feedBackStatusUpdate'] as const,
+    deleteFeedBack: () => ['feedBackDelete'] as const,
+  },
   // Users
-  users: {
-    all: () => ['users'] as const,
-    lists: () => [...queryKeys.users.all(), 'list'] as const,
-    list: (filters: Record<string, any>) =>
-      [...queryKeys.users.lists(), { filters }] as const,
-    details: () => [...queryKeys.users.all(), 'detail'] as const,
-    detail: (id: string) => [...queryKeys.users.details(), id] as const,
+  Users: {
+    user: () => ['listUser'] as const,
   },
 };
 

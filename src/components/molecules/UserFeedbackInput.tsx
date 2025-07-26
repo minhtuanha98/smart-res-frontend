@@ -1,80 +1,113 @@
 import React from 'react';
-import { TextField, Box, Button, Typography } from '@mui/material';
+import { TextField, Box, Typography } from '@mui/material';
 import ButtonBase from '../atoms/ButtonBase';
 
-export interface UserFeedbackInputProps {
-  values: {
-    title: string;
-    apartment: string;
-    content: string;
-    image: File | null;
-  };
-  onChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
-  onImageChange: (file: File | null) => void;
-  onSubmit: (e: React.FormEvent) => void;
-  loading?: boolean;
+interface UserFeedbackInputProps {
+  formik?: any;
+  isLoading?: boolean;
+  error?: string;
 }
 
 const UserFeedbackInput: React.FC<UserFeedbackInputProps> = ({
-  values,
-  onChange,
-  onImageChange,
-  onSubmit,
-  loading,
+  formik,
+  isLoading,
 }) => {
   return (
-    <Box
-      component='form'
-      onSubmit={onSubmit}
-      className='flex flex-col gap-4 p-4 bg-white rounded shadow'
-    >
+    <Box className='flex flex-col gap-4 p-4 bg-white rounded shadow'>
       <Typography variant='h6'>Gửi phản ánh</Typography>
-      <TextField
-        label='Tiêu đề'
-        name='title'
-        value={values.title}
-        onChange={onChange}
-        required
-        fullWidth
-      />
-      <TextField
-        label='Căn hộ'
-        name='apartment'
-        value={values.apartment}
-        onChange={onChange}
-        required
-        fullWidth
-      />
-      <TextField
-        label='Nội dung chi tiết'
-        name='content'
-        value={values.content}
-        onChange={onChange}
-        required
-        fullWidth
-        multiline
-        minRows={3}
-      />
-      <input
-        type='file'
-        accept='image/*'
-        onChange={e => onImageChange(e.target.files?.[0] || null)}
-      />
-      {values.image && (
-        <span className='text-sm text-gray-600'>
-          Đã chọn: {values.image.name}
-        </span>
-      )}
-      <ButtonBase
-        type='submit'
-        variant='contained'
-        color='primary'
-        disabled={loading}
+      <form
+        onSubmit={formik.handleSubmit}
+        noValidate
+        className='flex flex-col gap-4'
       >
-        {loading ? 'Đang gửi...' : 'Gửi phản ánh'}
-      </ButtonBase>
+        <div>
+          <TextField
+            label='Tiêu đề'
+            name='title'
+            value={formik?.values?.title || ''}
+            onChange={formik.handleChange || (() => {})}
+            onBlur={formik.handleBlur || (() => {})}
+            autoComplete='title'
+            required
+            fullWidth
+            error={Boolean(formik.touched.title && formik.errors.title)}
+            className='bg-white'
+            InputProps={{ className: 'rounded' }}
+          />
+          {formik.touched.title && formik.errors.title && (
+            <Typography color='error' variant='caption' className='ml-2'>
+              {formik.errors.title}
+            </Typography>
+          )}
+        </div>
+        <div>
+          <TextField
+            label='Căn hộ'
+            name='apartNumber'
+            value={formik?.values?.apartNumber || ''}
+            onChange={formik.handleChange || (() => {})}
+            onBlur={formik.handleBlur || (() => {})}
+            autoComplete='apartNumber'
+            required
+            fullWidth
+            error={Boolean(
+              formik.touched.apartNumber && formik.errors.apartNumber
+            )}
+            className='bg-white'
+          />
+          {formik.touched.apartNumber && formik.errors.apartNumber && (
+            <Typography color='error' variant='caption' className='ml-2'>
+              {formik.errors.apartNumber}
+            </Typography>
+          )}
+        </div>
+        <div>
+          <TextField
+            label='Nội dung chi tiết'
+            name='content'
+            value={formik?.values?.content || ''}
+            onChange={formik.handleChange || (() => {})}
+            onBlur={formik.handleBlur || (() => {})}
+            autoComplete='content'
+            required
+            fullWidth
+            error={Boolean(formik.touched.content && formik.errors.content)}
+            className='bg-white'
+            multiline
+            minRows={3}
+          />
+          {formik.touched.content && formik.errors.content && (
+            <Typography color='error' variant='caption' className='ml-2'>
+              {formik.errors.content}
+            </Typography>
+          )}
+        </div>
+        <div className='flex flex-col gap-2 w-[30%]'>
+          <input
+            className='mt-2 block w-sm text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100'
+            type='file'
+            accept='image/*'
+            onChange={e => {
+              const file = e.target.files?.[0] || null;
+              formik.setFieldValue('image', file);
+            }}
+          />
+          {formik.values.image && (
+            <span>
+              Đã chọn: {formik.values.image.name || 'Chưa có tệp nào được chọn'}
+            </span>
+          )}
+        </div>
+        <ButtonBase
+          type='submit'
+          variant='contained'
+          color='primary'
+          disabled={isLoading}
+          className='mt-4 w-full'
+        >
+          {isLoading ? 'Đang gửi...' : 'Gửi phản ánh'}
+        </ButtonBase>
+      </form>
     </Box>
   );
 };

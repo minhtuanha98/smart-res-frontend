@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const path = require('path');
 
+const BE_URL = process.env.BE_URL || 'http://localhost:8000';
+
 const nextConfig = {
   reactStrictMode: true,
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
@@ -18,6 +20,14 @@ const nextConfig = {
       '@/middleware': path.resolve(__dirname, 'src/middleware'),
     };
     return config;
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/uploads/:path*',
+        destination: `${BE_URL}/uploads/:path*`,
+      },
+    ];
   },
 };
 
