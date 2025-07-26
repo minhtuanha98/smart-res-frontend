@@ -1,6 +1,6 @@
 import { loginSchema } from '@/schemas/loginSchema';
 import { useFormik } from 'formik';
-import router from 'next/router';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { LoginResponse } from '@/types';
@@ -19,6 +19,7 @@ interface LoginError {
 }
 
 export const useLogin = () => {
+  const router = useRouter();
   const [data, setData] = useState<LoginResponse | null>(null);
   const validate = loginSchema;
 

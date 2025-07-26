@@ -91,3 +91,6 @@ logs
 # Temporary files
 temp/
 tmp/
+
+*storybook.log
+storybook-static
