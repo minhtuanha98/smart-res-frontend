@@ -33,7 +33,9 @@ export const useLogin = () => {
       }
     },
     onError: (error: LoginError) => {
-      toast(LOGIN_FAIL + (error.response?.data?.message || error.message));
+      toast(
+        LOGIN_FAIL + ' ' + (error.response?.data?.message || error.message)
+      );
     },
   });
 

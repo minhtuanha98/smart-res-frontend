@@ -4,7 +4,7 @@ import { LoginPayload, LoginResponse } from '@/types';
 import { queryKeys } from '@/utils/query-client';
 import { useMutation, UseMutationOptions } from '@tanstack/react-query';
 
-const { LOGIN, LOGOUT } = API_ENDPOINTS.AUTH;
+const { LOGIN, LOGOUT, REFRESH_TOKEN } = API_ENDPOINTS.AUTH;
 
 export const useLoginMutationApi = (
   options?: UseMutationOptions<LoginResponse, Error, LoginPayload>
@@ -26,4 +26,11 @@ export const useLogoutApi = (options?: UseMutationOptions<Error, void>) => {
     },
     ...options,
   });
+};
+
+export const refreshToken = async () => {
+  const res = await axiosInstance.post(REFRESH_TOKEN, {
+    withCredentials: true,
+  });
+  return res.data;
 };

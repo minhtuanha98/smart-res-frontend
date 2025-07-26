@@ -16,7 +16,9 @@ export const useLogout = () => {
     },
 
     onError: (error: any) => {
-      toast(LOGOUT_FAIL + (error.response?.data?.message || error.message));
+      toast(
+        LOGOUT_FAIL + ' ' + (error.response?.data?.message || error.message)
+      );
     },
   });
 

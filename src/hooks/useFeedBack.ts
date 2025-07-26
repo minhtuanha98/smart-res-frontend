@@ -31,7 +31,9 @@ export const useFeedBack = (params: PayloadType) => {
     },
     onError: (error: sendError) => {
       toast(
-        CREATE_FEEDBACK_FAIL + (error.response?.data?.message || error.message)
+        CREATE_FEEDBACK_FAIL +
+          ' ' +
+          (error.response?.data?.message || error.message)
       );
     },
   });

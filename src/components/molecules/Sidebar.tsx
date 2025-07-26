@@ -1,5 +1,5 @@
 import React from 'react';
-import { Drawer, List, Toolbar, Box, Button } from '@mui/material';
+import { Drawer, List, Toolbar, Box } from '@mui/material';
 import SidebarItem from '@/components/atoms/SidebarItem';
 import ButtonBase from '@/components/atoms/ButtonBase';
 

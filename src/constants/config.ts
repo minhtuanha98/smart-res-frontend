@@ -14,6 +14,7 @@ export const API_ENDPOINTS = {
   AUTH: {
     LOGIN: '/user/login',
     LOGOUT: '/user/logout',
+    REFRESH_TOKEN: '/auth/refresh_token',
   },
   FEEDBACK: {
     USER_LIST: '/user/list/feedbacks',
