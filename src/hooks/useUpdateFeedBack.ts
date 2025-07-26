@@ -27,7 +27,9 @@ export const useUpdateFeedBack = () => {
     },
     onError: (error: sendError) => {
       toast(
-        UPDATE_FEEDBACK_FAIL + (error.response?.data?.message || error.message)
+        UPDATE_FEEDBACK_FAIL +
+          ' ' +
+          (error.response?.data?.message || error.message)
       );
     },
   });

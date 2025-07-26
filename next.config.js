@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const path = require('path');
 
-const BE_URL = process.env.BE_URL || 'http://localhost:8000';
+const BE_URL = process.env.BE_URL || 'http://localhost:3000';
 
 const nextConfig = {
   reactStrictMode: true,

@@ -27,7 +27,9 @@ export const useDeleteFeedBack = () => {
     },
     onError: (error: sendError) => {
       toast(
-        DELETE_FEEDBACK_FAIL + (error.response?.data?.message || error.message)
+        DELETE_FEEDBACK_FAIL +
+          ' ' +
+          (error.response?.data?.message || error.message)
       );
     },
   });
