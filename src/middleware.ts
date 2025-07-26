@@ -19,7 +19,7 @@ export function middleware(request: NextRequest) {
 
   if (token) {
     try {
-      const decoded: DecodedToken = jwtDecode(token);
+      const decoded: DecodedToken = jwtDecode(token.value);
       const role = decoded.role;
 
       if (role === 'resident' && pathname.startsWith('/managerpage')) {

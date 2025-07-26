@@ -20,13 +20,13 @@ const LoginTemplate: React.FC<LoginTemplateProps> = ({ title, formik }) => {
           <TextField
             name='username'
             label='Username'
-            placeholder='username'
             value={formik.values.username || ''}
             onChange={formik.handleChange || (() => {})}
             onBlur={formik.handleBlur || (() => {})}
             required
             fullWidth
             autoComplete='username'
+            variant='outlined'
             margin='normal'
             error={Boolean(formik.touched.username && formik.errors.username)}
           />
@@ -38,7 +38,6 @@ const LoginTemplate: React.FC<LoginTemplateProps> = ({ title, formik }) => {
           <TextField
             name='password'
             label='Password'
-            placeholder='password'
             type='password'
             value={formik.values.password || ''}
             onChange={formik.handleChange || (() => {})}
@@ -46,6 +45,7 @@ const LoginTemplate: React.FC<LoginTemplateProps> = ({ title, formik }) => {
             required
             fullWidth
             autoComplete='current-password'
+            variant='outlined'
             margin='normal'
             error={Boolean(formik.touched.password && formik.errors.password)}
           />
