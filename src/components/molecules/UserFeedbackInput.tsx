@@ -14,7 +14,7 @@ const UserFeedbackInput: React.FC<UserFeedbackInputProps> = ({
 }) => {
   return (
     <Box className='flex flex-col gap-4 p-4 bg-white rounded shadow'>
-      <Typography variant='h6'>Gửi phản ánh</Typography>
+      <Typography variant='h6'>FEEDBACK</Typography>
       <form
         onSubmit={formik.handleSubmit}
         noValidate
