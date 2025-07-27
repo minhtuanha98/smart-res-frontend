@@ -49,7 +49,7 @@ export const useLogin = () => {
       try {
         await loginMutation.mutateAsync(values);
       } catch (error) {
-        // logger.error('fail to login', error);
+        toast('error' + error);
       }
     },
   });

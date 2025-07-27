@@ -1,53 +1,42 @@
-
 # 🍽️ Smart Residence Frontend
 
-A modern, responsive frontend application for Smart Residence management built with Next.js, TypeScript, and Tailwind CSS.
-
+A modern, production-ready dashboard for residence management, built with Next.js, TypeScript, Tailwind CSS, MUI, React Query, and Atomic Design.
 
 ## ✨ Features
 
-- **🚀 Next.js 12.x** with Pages Router for optimal performance
-- **📘 TypeScript** for type safety and better developer experience
-- **🎨 Tailwind CSS v3** with custom design system
-- **⚡ React Query** (TanStack Query) for efficient data fetching
-- **🔧 Axios** HTTP client with interceptors and error handling
-- **🧩 Atomic Design** component architecture
-- **🛡️ ESLint & Prettier** for code quality and consistency
-- **🔒 Authentication middleware** with route protection
-- **📱 Responsive Design** optimized for all devices
-- **🎭 Custom hooks** and utilities for reusable logic
+- **Next.js 14+** with Pages Router
+- **TypeScript** for type safety
+- **Tailwind CSS v3** and **MUI** for modern UI
+- **Atomic Design**: Atoms, Molecules, Organisms, Templates
+- **React Query** for data fetching, caching, and mutation
+- **Axios** with interceptors, refresh token, and HTTP-only cookie authentication
+- **Authentication**: Login, logout, protected routes, role-based redirect, Next.js middleware
+- **User & Feedback Management**: CRUD, pagination, real-time table update
+- **File Upload**: Multi-image upload with preview
+- **Toast Notifications**: react-toastify for UX feedback
+- **Error Handling**: Global and mutation-level
+- **Storybook**: Full coverage for all atomic components, with mock data and Tailwind styling
+- **Accessibility**: ARIA, keyboard navigation, a11y best practices
+- **ESLint & Prettier**: Code quality and formatting
+- **Responsive Design**: Mobile-first, adaptive layouts
 
 ## 🏗️ Project Structure
 
 ```
 src/
 ├── components/          # UI Components (Atomic Design)
-│   ├── atoms/          # Basic building blocks (Button, Input, Card)
+│   ├── atoms/          # Basic building blocks (Button, Input, Card, etc.)
 │   ├── molecules/      # Simple component groups
-│   ├── organisms/      # Complex component sections
-│   ├── pages/          # Page-specific components
-│   └── templates/      # Page layouts
-├── hooks/              # Custom React hooks
-│   └── api.ts         # API-related hooks
-├── middleware/         # Next.js middleware
-│   └── auth.ts        # Authentication & route protection
+│   ├── organisms/      # Complex component sections (Table, Sidebar, etc.)
+│   ├── templates/      # Page layouts
+├── hooks/              # Custom React hooks (login, feedback, user, etc.)
+├── api/                # API hooks and axios logic
+├── middleware/         # Next.js middleware for route protection
 ├── pages/              # Next.js pages (routing)
-│   ├── _app.js        # App configuration
-│   └── index.js       # Homepage
-├── styles/             # Global styles
-│   ├── globals.css    # Tailwind directives & global styles
-│   └── variables.css  # CSS custom properties
+├── styles/             # Global styles (Tailwind, custom CSS)
+├── constants/          # App constants, endpoints, messages
 ├── types/              # TypeScript type definitions
-│   └── index.ts       # Shared types
-├── utils/              # Utility functions
-│   ├── api.ts         # Axios client configuration
-│   ├── browser-logger.ts # Browser-safe logging
-│   ├── cn.ts          # Class name utility
-│   ├── id.ts          # ID generation utilities
-│   ├── query-client.ts # React Query configuration
-│   └── react-query.tsx # React Query provider
-└── constants/          # Application constants
-    └── index.ts       # API endpoints, configurations
+├── utils/              # Utility functions (query-client, logger, etc.)
 ```
 
 ## 🚀 Getting Started
@@ -113,64 +102,35 @@ npm start
 
 ## 🎨 Design System
 
-### Colors
-
-- **Primary**: Red palette (50-900) for brand elements
-- **Secondary**: Gray/Slate palette for neutral elements
-- **Semantic**: Success, Warning, Error, Info colors
-
-### Typography
-
-- **Font Family**: Inter (primary), Fira Code (monospace)
-- **Responsive**: Base 16px with responsive scaling
-
-### Components
-
-- **Atomic Design**: Scalable component architecture
-- **Reusable**: Consistent props and styling
-- **Accessible**: ARIA labels and keyboard navigation
+- **Atomic Design**: Atoms, Molecules, Organisms, Templates
+- **Tailwind CSS**: Utility-first, custom theme, responsive
+- **MUI**: Material UI components, accessibility
+- **Storybook**: All components have stories with mock data and Tailwind background
 
 ## 🔧 API Integration
 
-### Axios Client
+- **Axios**: Centralized instance, interceptors, withCredentials, refresh token logic
+- **React Query**: Query/mutation hooks, cache, optimistic update
+- **File Upload**: Multi-image upload, preview, FormData
 
-```typescript
-import { apiClient } from '@/utils/api';
+## 🛡️ Authentication & Security
 
-// GET request
-const data = await apiClient.get('/users');
+- **Login/Logout**: Secure, HTTP-only cookies
+- **Refresh Token**: Automatic retry on 401, interceptor logic
+- **Protected Routes**: Next.js middleware, role-based redirect
+- **No token in localStorage**: All auth via cookies
 
-// POST request
-const newUser = await apiClient.post('/users', userData);
+## � Storybook
 
-// File upload
-const result = await apiClient.upload('/upload', formData);
-```
+- Run: `npm run storybook`
+- All atomic components, molecules, organisms, templates have stories
+- Mock data, Tailwind background, a11y best practices
 
-### React Query Hooks
+## ♿ Accessibility (a11y)
 
-```typescript
-import { useUsers, useCreateUser } from '@/hooks/api';
-
-// Fetch data
-const { data: users, isLoading, error } = useUsers();
-
-// Mutations
-const createUser = useCreateUser();
-await createUser.mutateAsync(userData);
-```
-
-## 🛡️ Authentication
-
-Protected routes are automatically secured using Next.js middleware:
-
-```typescript
-// Protected pages
-const protectedRoutes = ['/dashboard', '/profile', '/admin'];
-
-// Public pages
-const publicRoutes = ['/', '/login', '/register'];
-```
+- ARIA labels, keyboard navigation, focus management
+- No `aria-hidden` on focused elements
+- Use of MUI and Tailwind for accessible UI
 
 ## 📦 Available Scripts
 
