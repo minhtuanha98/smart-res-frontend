@@ -57,7 +57,7 @@ export const useFeedBack = (params: PayloadType) => {
         await sendFeedBackMutation.mutateAsync(payload);
         formik.resetForm();
       } catch (error) {
-        // logger.error('fail to login', error);
+        toast('error' + error);
       }
     },
   });
